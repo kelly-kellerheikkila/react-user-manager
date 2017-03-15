@@ -1,0 +1,10 @@
+import React from 'react';
+import { Route, IndexRoute } from 'react-router';
+import App from '../common/App';
+import UserContainer from './user/UserContainer';
+
+export default (
+  <Route path="/" component={App}>
+    <IndexRoute component={UserContainer} />
+  </Route>
+);

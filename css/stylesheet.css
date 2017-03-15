@@ -1,0 +1,96 @@
+body { 
+    padding-top: 70px; 
+    padding-bottom: 50px; 
+}
+.table-responsive {
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+}
+.disabled {opacity: 0.3;}
+
+/* navbar menu */
+li.nav.dropdown ul.dropdown-menu li a {
+    padding: 10px 15px;
+}
+
+
+.hidden {display: none;}
+.required {
+    border-color: #f29e9e;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+button span.button-label {padding-left: 5px;}
+
+/* errors and modals */
+.error-dialog-header {background: #8ab1ec;}
+
+.modal-container {
+    position: relative;
+}
+.modal-container .modal, .modal-container .modal-backdrop {
+    position: absolute;
+}
+.modal-header {background-color: #8ab1ec;}
+
+#error-body .error-message {margin-top: 20px; font-weight: bold;}
+#error-body .error-details {margin-top: 20px; margin-bottom: 0; font-size: .8em;}
+
+/* Navigation tabs */
+.nav-tabs {margin-top: 1em;}
+
+/* Table with fixed header */
+.table-section {
+    position: relative;
+    border: none;
+    padding-top: 37px;
+    background-color: #fff;
+}
+.table-container {
+    overflow-y: auto;
+    height: 450px;
+}
+table {
+    border-spacing: 0;
+    width:100%;
+}
+td + td {
+    border-left: 1px solid #eee;
+}
+td, th {
+    border-bottom:1px solid #eee;
+    color: #000;
+}
+
+th {
+    background-color: #fff;
+}
+
+.table-fixed-header thead tr th {
+    height: 0;
+    line-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    color: transparent;
+    border: none;
+    white-space: nowrap;
+}
+th div{
+    position: absolute;
+    background: transparent;
+    color: #000;
+    padding: 0 25px;
+    top: 0;
+    margin-left: -25px;
+    line-height: normal;
+    /*border-left: 1px solid #800;*/
+}
+th:first-child div{
+    border: none;
+}
+
+.busy-indicator {
+    margin: 50px auto;
+    text-align: center;
+    border: 0;
+}

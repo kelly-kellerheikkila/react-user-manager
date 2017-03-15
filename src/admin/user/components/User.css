@@ -1,0 +1,2 @@
+.User-checkbox {float: left;}
+.User-checkbox input[type=checkbox] + label:before {font-size: 24px;}

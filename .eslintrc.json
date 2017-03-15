@@ -1,0 +1,20 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "extends": "airbnb",
+  "rules": {
+    "dot-notation": 0,
+    "linebreak-style": 0,
+    "max-len": [2, {"code": 120, "tabWidth": 2, "ignoreUrls": true}],
+    "new-cap": 0,
+    "no-empty": 0,
+    "no-undef": 0,
+    "no-underscore-dangle": 0,
+    "react/jsx-no-bind": 0
+  }
+}

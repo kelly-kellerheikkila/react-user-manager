@@ -1,0 +1,70 @@
+{
+  "name": "react-user-manager",
+  "version": "0.1.0",
+  "description": "Example ReactJS User Manager",
+  "main": "dist/bundle.js",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "classnames": "2.2.5",
+    "enzyme": "^2.5.1",
+    "fetch-mock": "^5.5.0",
+    "history": "^2.1.2",
+    "isomorphic-fetch": "^2.2.1",
+    "keymirror": "^0.1.1",
+    "object-assign": "^4.1.0",
+    "react": "^15.3.2",
+    "react-addons-shallow-compare": "^15.3.2",
+    "react-bootstrap": "^0.30.5",
+    "react-bootstrap-date-picker": "git+https://github.com/agvantage/react-bootstrap-date-picker.git",
+    "react-dom": "^15.3.2",
+    "react-redux": "^4.4.5",
+    "react-required-if": "^1.0.0",
+    "react-router": "^2.8.1",
+    "react-router-bootstrap": "^0.23.1",
+    "react-timer-mixin": "^0.13.3",
+    "redux": "^3.6.0",
+    "redux-logger": "^2.7.0",
+    "redux-mock-store": "^1.2.1",
+    "redux-thunk": "^2.1.0",
+    "sinon": "^1.17.6"
+  },
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register -r jsdom-global/register --require tests/null-compiler.js src/**/*.test.js src/**/*.test.jsx"
+  },
+  "author": "Kelly Keller-Heikkila",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.18.0",
+    "babel-eslint": "^6.1.2",
+    "babel-loader": "^6.2.5",
+    "babel-plugin-transform-object-rest-spread": "^6.16.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "cheerio": "^0.20.0",
+    "css-loader": "^0.23.1",
+    "eslint": "^3.8.1",
+    "eslint-config-airbnb": "^10.0.1",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.4.1",
+    "jsdom": "9.4.2",
+    "jsdom-global": "2.0.0",
+    "mocha": "^3.1.2",
+    "null-loader": "^0.1.1",
+    "react-addons-test-utils": "^15.3.2",
+    "redux-devtools": "^3.3.1",
+    "redux-devtools-dock-monitor": "^1.1.1",
+    "redux-devtools-log-monitor": "^1.1.0",
+    "source-map-support": "^0.4.5",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kelly-kellerheikkila/react-user-manager.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kelly-kellerheikkila/react-user-manager/issues"
+  },
+  "homepage": "https://github.com/kelly-kellerheikkila/react-user-manager/#readme"
+}
