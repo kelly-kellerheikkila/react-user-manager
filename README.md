@@ -1,5 +1,8 @@
 # react-user-manager
-This is a simple ReactJS/Redux example of an admin user module, such as what would be used as part of a larger platform. Features of this demo include:
+This is a simple ReactJS/Redux demo of an admin user module, such as what would be used as part of a larger platform.
+Its purpose is to show an example of Kelly Keller-Heikkila's JavaScript development work.
+
+Features of this demo include:
 
 * Create new users, assign package licenses to them, remove licenses, and delete users
 * Count of current licensed users vs. max licensed users is maintained throughout
@@ -10,4 +13,4 @@ This is a simple ReactJS/Redux example of an admin user module, such as what wou
 
 The packages shown are dynamically generated and would normally be returned in the REST response. All data is mocked, so there is no actual REST API server behind this demo, though it would be trivial to create one in Python, PHP, etc.
 
-The demo was written by Kelly Keller-Heikkila. If interested in how Kelly can help your development efforts, feel free to reach her at kelly@keller-heikkila.org.
+If interested in how Kelly can help your development efforts, feel free to reach her at kelly@keller-heikkila.org.
