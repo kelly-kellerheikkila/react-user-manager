@@ -8,42 +8,28 @@ export function appCloseErrorModal() {
 }
 
 // noinspection JSUnusedGlobalSymbols
-export function appFetchPermissions() {
+export function appFetchPermissions(forceAJAXMock = true) {
   // fetch users only if they have not already been fetched
-  return (dispatch, getState) => {
-    let permissions = getState().app.permissions;
-    if (Object.keys(permissions).length > 0) {
-      return null;
-    }
-
-    permissions = localStorage.getItem('permissions');
-    if (permissions !== null) {
-      // Permissions previously retrieved and is in local storage
-      permissions = JSON.parse(permissions);
-      dispatch({ type: AppConstants.ActionTypes.APP_PERMISSIONS_FETCH_SUCCESS, permissions });
-    } else {
-      const url = AppConstants.ApiEndpoints.APP_PERMISSIONS;
-      dispatch({ type: AppConstants.ActionTypes.APP_PERMISSIONS_FETCH });
-      Utils.fetch(
-        `${url}?${Utils.getQueryString()}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-        , AppMockData.mockPermissions // mock this AJAX call due to example
-      )
-        .then(json => {
-          // save to local storage to avoid unnecessary hits to server, even outside of Redux
-          localStorage.setItem('permissions', JSON.stringify(json));
-          dispatch({ type: AppConstants.ActionTypes.APP_PERMISSIONS_FETCH_SUCCESS, permissions: json });
-        })
-        .catch(error => {
-          dispatch(Utils.fetchErrorModal(error));
-        });
-    }
-    return null;
+  return (dispatch) => {
+    const url = AppConstants.ApiEndpoints.APP_PERMISSIONS;
+    const mockData = forceAJAXMock ? AppMockData.mockPermissions : null;
+    dispatch({ type: AppConstants.ActionTypes.APP_PERMISSIONS_FETCH });
+    return Utils.fetch(
+      `${url}?${Utils.getQueryString()}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+      , mockData // mock this AJAX call due to demo
+    )
+      .then(json => {
+        dispatch({ type: AppConstants.ActionTypes.APP_PERMISSIONS_FETCH_SUCCESS, permissions: json });
+      })
+      .catch(error => {
+        dispatch(Utils.fetchErrorModal(error));
+      });
   };
 }
 
