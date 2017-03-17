@@ -28,6 +28,6 @@
     font-feature-settings: 'liga';
 }
 .app-checkbox input[type=checkbox] + label:before { content: "check_box_outline_blank"; } /* unchecked icon */
-.app-checkbox input[type=checkbox]:checked + label:before { color: #0C0; content: "check_box"; } /* checked icon */
+.app-checkbox input[type=checkbox]:checked + label:before { color: #070; content: "check_box"; } /* checked icon */
 .app-checkbox.partial input[type=checkbox]:checked + label:before { color: #0C0; content: "indeterminate_check_box"; } /* indeterminate icon */
 .app-checkbox input[type=checkbox] + label { font-weight: normal; }

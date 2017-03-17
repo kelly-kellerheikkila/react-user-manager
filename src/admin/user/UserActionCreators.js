@@ -4,6 +4,29 @@ import UserMockData from './UserMockData'; // only used for mocking a REST respo
 
 
 // noinspection JSUnusedGlobalSymbols
+export function adminUserCreate(newUser) {
+  return (dispatch) => {
+    const url = UserConstants.ApiEndpoints.USER;
+    dispatch({ type: UserConstants.ActionTypes.USER_CREATE, newUser });
+    return Utils.fetch(
+      `${url}?${Utils.getQueryString()}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      }
+      , {} // mock this AJAX call due to example
+    )
+      .catch(error => {
+        dispatch({ type: UserConstants.ActionTypes.USER_CHANGE_FAILURE });
+        dispatch(Utils.fetchErrorModal(error));
+      });
+  };
+}
+
+// noinspection JSUnusedGlobalSymbols
 export function adminUserDelete(user) {
   return (dispatch) => {
     const url =
@@ -66,42 +89,19 @@ export function adminUserShowWhatIsThis() {
 }
 
 // noinspection JSUnusedGlobalSymbols
-export function adminUserSubmitNew(newUser) {
-  return (dispatch) => {
-    const url = UserConstants.ApiEndpoints.USER;
-    dispatch({ type: UserConstants.ActionTypes.USER_NEW_SUBMIT, newUser });
-    return Utils.fetch(
-      `${url}?${Utils.getQueryString()}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newUser),
-      }
-      , {} // mock this AJAX call due to example
-    )
-      .catch(error => {
-        dispatch({ type: UserConstants.ActionTypes.USER_CHANGE_FAILURE });
-        dispatch(Utils.fetchErrorModal(error));
-      });
-  };
-}
-
-// noinspection JSUnusedGlobalSymbols
 export function adminUserShowNewForm() {
   return { type: UserConstants.ActionTypes.USER_SHOW_NEW_FORM };
 }
 
 // noinspection JSUnusedGlobalSymbols
-export function adminUserUpdateFieldValidations(fieldID, isValid, errMsg) {
-  return { type: UserConstants.ActionTypes.USER_UPDATE_VALIDATION, fieldID, isValid, errMsg };
+export function adminUserUpdateFieldValidations(userID, fieldID, errMsg, isValid, value) {
+  return { type: UserConstants.ActionTypes.USER_UPDATE_VALIDATION, userID, fieldID, errMsg, isValid, value };
 }
 
 // noinspection JSUnusedGlobalSymbols
 export function adminUserValueChanged(initialUser, pkg, isEnabled) {
   const user = initialUser;
-  user[pkg] = isEnabled;
+  user[pkg].value = isEnabled;
   return (dispatch) => {
     const url = UserConstants.ApiEndpoints.USER_SINGLE;
     dispatch({ type: UserConstants.ActionTypes.USER_CHANGE, user, changedPkg: pkg, isEnabled });

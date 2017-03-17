@@ -100,7 +100,7 @@ class AppTextInput extends Component {
   validate(value) {
     const validity = { isValid: true, errMsg: null };
     if (value === '' && this.props.required) {
-      validity.errMsg = 'This is required';
+      validity.errMsg = 'Required';
       validity.isValid = false;
     } else if (value !== '') {
       // percent and currency should be validated as numeric
@@ -118,7 +118,7 @@ class AppTextInput extends Component {
         case 'numeric':
           if (typeof value !== 'number') {
             if (!regexp.numeric.test(value)) {
-              validity.errMsg = 'This must be a number';
+              validity.errMsg = 'Must be a number';
               validity.isValid = false;
             }
           }
@@ -126,7 +126,7 @@ class AppTextInput extends Component {
 
         case 'integer':
           if (!regexp.integer.test(value)) {
-            validity.errMsg = 'This must be an integer';
+            validity.errMsg = 'Must be an integer';
             validity.isValid = false;
           }
           break;

@@ -18,7 +18,7 @@ UserConstants.ActionTypes = keyMirror({
   USER_FETCH_SUCCESS: null,
   USER_HIDE_NEW_FORM: null,
   USER_HIDE_WHAT_IS_THIS: null,
-  USER_NEW_SUBMIT: null,
+  USER_CREATE: null,
   USER_SHOW_NEW_FORM: null,
   USER_SHOW_WHAT_IS_THIS: null,
   USER_UPDATE_VALIDATION: null,

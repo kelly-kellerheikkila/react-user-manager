@@ -9,7 +9,6 @@ import UserItem from './UserItem';
 
 const propTypes = {
   actions: PropTypes.object.isRequired,
-  fieldValidations: PropTypes.object.isRequired,
   formIsValid: PropTypes.bool.isRequired,
   numColumns: PropTypes.number.isRequired,
   permissions: PropTypes.object.isRequired,
@@ -80,7 +79,7 @@ class User extends PureComponent {
   getPkgHeaders() {
     const headers = [];
     Object.keys(this.props.pkgs).forEach(pkg => {
-      let licenseColor = '#0A0';
+      let licenseColor = '#070';
       const maxUsers = this.props.pkgs[pkg].maxUsers;
       const currentUsers = this.props.pkgs[pkg].currentUsers;
       const licensesRemaining = maxUsers - currentUsers;
@@ -114,7 +113,7 @@ class User extends PureComponent {
     } else if (Object.keys(this.props.users).length > 0) {
       const licenseItems = [];
       Object.keys(this.props.users).forEach(key => {
-        if (key !== 'isActive') {
+        if (key !== 'XXnewXX') { // don't show the new user placeholder
           licenseItems.push(this.getUserItem(this.props.users[key]));
         }
       });
@@ -140,7 +139,7 @@ class User extends PureComponent {
       <UserItem
         actions={this.props.actions}
         permissions={this.props.permissions}
-        key={user.userID}
+        key={user.userID.value}
         pkgs={this.props.pkgs}
         showEditFields={this.props.showEditFields}
         user={user}
@@ -151,7 +150,7 @@ class User extends PureComponent {
   getWhatIsThis() {
     if (this.props.showWhatIsThis) {
       return (
-        <div id="whatIsThis">
+        <div id="whatIsThis" style={{ paddingBottom: '10px' }}>
           <Button onClick={this.onHideWhatIsThis}>
             <Glyphicon glyph="remove" style={{ marginRight: '5px' }} />
             Hide
@@ -174,6 +173,10 @@ class User extends PureComponent {
             <li>An example second package "Other Package" is included to demo how multiple packages/modules would be
               structured in the code (you can access Other Package by going to the Packages dropdown above)
             </li>
+            <li>Username must be in all capitals</li>
+            <li>Table uses fixed headers</li>
+            <li>Users displayed in alphabetical order, according to username</li>
+            <li>Realtime validation of form data</li>
           </ul>
           <p>
             The packages shown are dynamically generated and would normally be returned in the REST response.
@@ -183,15 +186,14 @@ class User extends PureComponent {
           <p>
             The demo was written by Kelly Keller-Heikkila. Source code is available
             at <a href="https://github.com/kelly-kellerheikkila/react-user-manager">Github</a>. If interested in how
-            Kelly
-            can help your development efforts, feel free to reach her
+            Kelly can help your development efforts, feel free to reach her
             at <a href="mailto:kelly@keller-heikkila.org">kelly@keller-heikkila.org</a>.
           </p>
         </div>
       );
     }
     return (
-      <Button onClick={this.onShowWhatIsThis}>
+      <Button onClick={this.onShowWhatIsThis} style={{ marginBottom: '10px' }}>
         <Glyphicon glyph="question-sign" style={{ marginRight: '5px' }} />
         What is this demo?
       </Button>
@@ -219,6 +221,14 @@ class User extends PureComponent {
                     <th>
                       Full Name
                       <div>Full Name</div>
+                    </th>
+                    <th>
+                      Favorite Integer
+                      <div>Favorite Integer</div>
+                    </th>
+                    <th>
+                      Favorite Numeric
+                      <div>Favorite Numeric</div>
                     </th>
                     {this.getPkgHeaders()}
                     <th />

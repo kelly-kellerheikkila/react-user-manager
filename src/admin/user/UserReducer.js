@@ -1,22 +1,17 @@
-import UserConstants from './UserConstants';
 import AppConstants from '../../common/AppConstants';
+import Utils from '../../common/Utils';
+import UserConstants from './UserConstants';
 import * as UserActionCreators from './UserActionCreators';
 
+// default state of new user
+const blankUser = {
+  fullName: { errMsg: null, isValid: false, value: '' }, // required field, but errMsg is handled by component
+  userID: { errMsg: null, isValid: false, value: '' }, // required field
+  favInt: { errMsg: null, isValid: true, value: '' }, // optional field
+  favNum: { errMsg: null, isValid: true, value: '' }, // optional field
+};
+
 class UserReducer {
-  static getFieldValidations(state = { fullName: false, userID: false }, action) {
-    switch (action.type) {
-      case UserConstants.ActionTypes.USER_SHOW_NEW_FORM:
-        // set all validations to true, since this is pre-existing
-        return { fullName: false, userID: false };
-
-      case UserConstants.ActionTypes.USER_UPDATE_VALIDATION:
-        return Object.assign({}, state, { [action.fieldID]: action.isValid });
-
-      default:
-        return state;
-    }
-  }
-
   static getNumColumns(state = 2, action, pkgs) {
     switch (action.type) {
       case UserConstants.ActionTypes.USER_FETCH:
@@ -60,7 +55,7 @@ class UserReducer {
 
       case UserConstants.ActionTypes.USER_DELETE:
         Object.keys(action.user).forEach(pkg => {
-          if (pkg !== 'userID' && pkg !== 'formIsValid' && pkg !== 'userIDErrMsg' && pkg !== 'fullName') {
+          if (pkg !== 'userID' && pkg !== 'fullName' && pkg !== 'favInt' && pkg !== 'favNum') {
             if (action.user[pkg]) {
               mutablePkgs[pkg].currentUsers = recalculateCurrentUsers(pkg, false);
             }
@@ -73,19 +68,19 @@ class UserReducer {
           mutableFreshPkgs[pkg.id] = pkg;
           mutableFreshPkgs[pkg.id].currentUsers = 0;
           Object.keys(users).forEach(user => {
-            if (users[user][pkg.id]) {
+            if (user !== 'XXnewXX' && users[user][pkg.id].value) {
               mutableFreshPkgs[pkg.id].currentUsers++;
             }
           });
         });
         return Object.assign({}, mutableFreshPkgs);
 
-      case UserConstants.ActionTypes.USER_NEW_SUBMIT:
+      case UserConstants.ActionTypes.USER_CREATE:
         Object.keys(action.newUser).forEach(pkg => {
           if (pkg !== 'userID'
-            && pkg !== 'formIsValid'
-            && pkg !== 'userIDErrMsg'
+            && pkg !== 'favInt'
             && pkg !== 'fullName'
+            && pkg !== 'favNum'
             && action.newUser[pkg]) {
             mutablePkgs[pkg].currentUsers = recalculateCurrentUsers(pkg, action.newUser[pkg]);
           }
@@ -102,7 +97,7 @@ class UserReducer {
       case UserConstants.ActionTypes.USER_HIDE_NEW_FORM:
         return true;
 
-      case UserConstants.ActionTypes.USER_NEW_SUBMIT:
+      case UserConstants.ActionTypes.USER_CREATE:
         return true;
 
       case UserConstants.ActionTypes.USER_SHOW_NEW_FORM:
@@ -124,7 +119,7 @@ class UserReducer {
       case UserConstants.ActionTypes.USER_HIDE_NEW_FORM:
         return true;
 
-      case UserConstants.ActionTypes.USER_NEW_SUBMIT:
+      case UserConstants.ActionTypes.USER_CREATE:
         return true;
 
       case UserConstants.ActionTypes.USER_SHOW_NEW_FORM:
@@ -140,7 +135,7 @@ class UserReducer {
       case UserConstants.ActionTypes.USER_HIDE_NEW_FORM:
         return false;
 
-      case UserConstants.ActionTypes.USER_NEW_SUBMIT:
+      case UserConstants.ActionTypes.USER_CREATE:
         return false;
 
       case UserConstants.ActionTypes.USER_SHOW_NEW_FORM:
@@ -184,32 +179,51 @@ class UserReducer {
     const mutableFreshUsers = {};
     const mutableUsers = state;
     const pkgCurrentUsers = [];
+    let tmpMutableUsers;
 
     switch (action.type) {
       case UserConstants.ActionTypes.USER_CHANGE:
-        return Object.assign({}, state, { [action.user.userID]: action.user });
+        return Object.assign({}, state, { [action.user.userID.value]: action.user });
 
       case UserConstants.ActionTypes.USER_DELETE:
-        delete mutableUsers[action.user.userID];
+        delete mutableUsers[action.user.userID.value];
         return Object.assign({}, state, mutableUsers);
 
       case UserConstants.ActionTypes.USER_FETCH_SUCCESS:
         action.users.forEach(user => {
-          mutableFreshUsers[user.userID] = user;
+          mutableFreshUsers[user.userID] = Utils.buildStateValueObj(user, mutableFreshUsers[user.userID]);
+          // count currentUsers
           Object.keys(user).forEach(pkg => {
-            if (pkg !== 'fullName' && pkg !== 'userID' && user[pkg]) {
+            if (pkg !== 'fullName' && pkg !== 'userID' && user[pkg] && pkg !== 'favInt' && pkg !== 'favNum') {
               pkgCurrentUsers[pkg] = pkgCurrentUsers[pkg] ? pkgCurrentUsers[pkg] + 1 : 1;
             }
           });
         });
+        mutableFreshUsers.XXnewXX = blankUser; // add "new" user as placeholder
         return Object.assign({}, mutableFreshUsers);
 
       case UserConstants.ActionTypes.USER_FETCH:
         return {};
 
-      case UserConstants.ActionTypes.USER_NEW_SUBMIT:
-        mutableUsers[action.newUser.userID] = action.newUser;
-        return Object.assign({}, state, mutableUsers);
+      case UserConstants.ActionTypes.USER_CREATE:
+        mutableUsers[action.newUser.userID] =
+          Utils.buildStateValueObj(action.newUser, mutableUsers[action.newUser.userID]);
+        // re-alphabetize list of users to get the new one in the correct spot
+        tmpMutableUsers = mutableUsers;
+        tmpMutableUsers = Object.keys(tmpMutableUsers).sort();
+        tmpMutableUsers.forEach(user => {
+          mutableFreshUsers[user] = mutableUsers[user];
+        });
+        mutableFreshUsers.XXnewXX = blankUser; // reset new user form
+        return Object.assign({}, mutableFreshUsers);
+
+      case UserConstants.ActionTypes.USER_UPDATE_VALIDATION:
+        mutableUsers[action.userID][action.fieldID] = {
+          errMsg: action.errMsg,
+          isValid: action.isValid,
+          value: action.value,
+        };
+        return Object.assign({}, mutableUsers);
 
       default:
         return state;
@@ -221,7 +235,6 @@ class UserReducer {
     const users = UserReducer.getUsers(state.users, action);
     const pkgs = UserReducer.getPkgs(state.pkgs, action, users);
     return {
-      fieldValidations: UserReducer.getFieldValidations(state.fieldValidations, action),
       numColumns: UserReducer.getNumColumns(state.numColumns, action, pkgs),
       pkgs,
       showCreateButton: UserReducer.getShowCreateButton(state.showCreateButton, action),

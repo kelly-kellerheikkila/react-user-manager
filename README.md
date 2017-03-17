@@ -10,6 +10,10 @@ Features of this demo include:
 * If the number of current licenses used reaches the max licenses, the UI will prevent further users from being licensed in that package
 * Permissions are checked to see if you have access to create users or delete them (you do)
 * An example second package "Other Package" is included to demo how multiple packages/modules would be structured in the code (you can access Other Package by going to the Packages dropdown above)
+* Username must be in all capitals
+* Table uses fixed headers
+* Users displayed in alphabetical order, according to username
+* Realtime validation of form data
 
 The packages shown are dynamically generated and would normally be returned in the REST response. All data is mocked, so there is no actual REST API server behind this demo, though it would be trivial to create one in Python, PHP, etc.
 

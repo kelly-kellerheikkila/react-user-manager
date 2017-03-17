@@ -14,11 +14,15 @@ const propTypes = {
 };
 
 function getInitialState(props) {
-  const state = { userID: '', userIDErrMsg: null, formIsValid: false };
-  Object.keys(props.pkgs).forEach(pkg => {
-    state[pkg] = false;
+  const initialState = {};
+  Object.keys(props.users.XXnewXX).forEach(prop => {
+    initialState[prop] = props.users.XXnewXX[prop];
   });
-  return state;
+  Object.keys(props.pkgs).forEach(pkg => {
+    initialState[pkg] = { errMsg: null, isValid: true, value: false };
+  });
+  initialState.formIsValid = false; // there are some required fields, so it's always not valid initially
+  return initialState;
 }
 
 class UserCreateItemForm extends Component {
@@ -33,13 +37,13 @@ class UserCreateItemForm extends Component {
   }
 
   onChange(targetID, value, isValid, errMsg) {
-    this.setState({ [targetID]: value, userIDErrMsg: errMsg });
-    this.props.actions.adminUserUpdateFieldValidations(targetID, isValid, errMsg);
+    this.setState({ [targetID]: { errMsg, isValid, value } });
+    this.props.actions.adminUserUpdateFieldValidations('XXnewXX', targetID, errMsg, isValid, value);
   }
 
   onSubmit(e) {
     e.preventDefault();
-    this.props.actions.adminUserSubmitNew(this.state);
+    this.props.actions.adminUserCreate(this.getFormValues());
   }
 
   onUserIDChange(id, value, initialIsValid, initialErrorMessage) {
@@ -96,6 +100,8 @@ class UserCreateItemForm extends Component {
             <tr>
               <th>Username</th>
               <th>Full Name</th>
+              <th>Favorite Integer</th>
+              <th>Favorite Numeric</th>
               {this.getPackageHeaders()}
               <th />
             </tr>
@@ -108,7 +114,7 @@ class UserCreateItemForm extends Component {
                   autoFocus
                   maxLength={10}
                   onChange={this.onUserIDChange}
-                  errMsg={this.state.userIDErrMsg}
+                  errMsg={this.state.userID.errMsg}
                   placeholder="Enter Username"
                   required
                   upperCaseOnly
@@ -118,10 +124,33 @@ class UserCreateItemForm extends Component {
               <td>
                 <AppTextInput
                   id="fullName"
+                  datatype="string"
                   maxLength={50}
                   onChange={this.onChange}
-                  errMsg={this.state.fullNameErrMsg}
+                  errMsg={this.state.fullName.errMsg}
                   required
+                  type="text"
+                />
+              </td>
+              <td>
+                <AppTextInput
+                  id="favInt"
+                  datatype="integer"
+                  maxLength={5}
+                  onChange={this.onChange}
+                  errMsg={this.state.favInt.errMsg}
+                  style={{ width: '70px' }}
+                  type="text"
+                />
+              </td>
+              <td>
+                <AppTextInput
+                  id="favNum"
+                  datatype="numeric"
+                  maxLength={5}
+                  onChange={this.onChange}
+                  errMsg={this.state.favNum.errMsg}
+                  style={{ width: '70px' }}
                   type="text"
                 />
               </td>

@@ -1,7 +1,13 @@
 body { 
     padding-top: 70px; 
-    padding-bottom: 50px; 
+    padding-bottom: 50px;
+    background-color: #eee;
 }
+
+.navbar-inverse {
+    background-color: #333;
+}
+
 .table-responsive {
     overflow-x: visible !important;
     overflow-y: visible !important;
@@ -44,26 +50,26 @@ button span.button-label {padding-left: 5px;}
     position: relative;
     border: none;
     padding-top: 37px;
-    background-color: #fff;
+    background-color: #eee;
 }
 .table-container {
     overflow-y: auto;
-    height: 450px;
+    height: 300px;
 }
 table {
     border-spacing: 0;
-    width:100%;
+    width: 100%;
 }
 td + td {
-    border-left: 1px solid #eee;
+    border-left: 1px solid #999;
 }
 td, th {
-    border-bottom:1px solid #eee;
+    border-bottom: 1px solid #999;
     color: #000;
 }
 
 th {
-    background-color: #fff;
+    background-color: #eee;
 }
 
 .table-fixed-header thead tr th {

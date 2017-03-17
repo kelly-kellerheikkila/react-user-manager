@@ -23,7 +23,7 @@ class UserItem extends Component {
   }
 
   onChange(id, checked) {
-    const pkg = id.replace(`-${this.props.user.userID}`, '');
+    const pkg = id.replace(`-${this.props.user.userID.value}`, '');
     this.props.actions.adminUserValueChanged(this.props.user, pkg, checked);
   }
 
@@ -44,27 +44,23 @@ class UserItem extends Component {
     const packageCells = [];
     Object.keys(this.props.user).forEach(pkg => {
       if (pkg !== 'userID'
-        && pkg !== 'userIDErrMsg'
-        && pkg !== 'formIsValid'
+        && pkg !== 'favInt'
+        && pkg !== 'favNum'
         && pkg !== 'fullName'
       ) {
         const maxUsers = this.props.pkgs[pkg]['maxUsers'];
         const currentUsers = this.props.pkgs[pkg]['currentUsers'];
         const licensesRemaining = maxUsers - currentUsers;
-        const isEnabled = this.props.showEditFields
-          && (
-            licensesRemaining > 0
-            || this.props.user[pkg] === true
-          );
+        const isEnabled = this.props.showEditFields && (licensesRemaining > 0 || this.props.user[pkg].value === true);
         const cell = (
           <td key={`${this.props.user.userID}.${pkg}`}>
             <AppCheckbox
-              id={`${pkg}-${this.props.user.userID}`}
-              checked={this.props.user[pkg]}
+              id={`${pkg}-${this.props.user.userID.value}`}
+              checked={this.props.user[pkg].value}
               className="User-checkbox"
               disabled={!isEnabled}
               onChange={this.onChange}
-              title={`${pkg}: ${this.props.user[pkg] ? 'Enabled' : 'Disabled'}`}
+              title={`${pkg}: ${this.props.user[pkg].value ? 'Enabled' : 'Disabled'}`}
             />
           </td>
         );
@@ -82,7 +78,7 @@ class UserItem extends Component {
           Delete
         </Button>
         <AppModalDialogConfirm
-          affectedItem={this.props.user.userID}
+          affectedItem={this.props.user.userID.value}
           message="This action permanently deletes the user."
           onClose={this.onDeleteCancel}
           onConfirm={this.onDeleteConfirm}
@@ -94,10 +90,16 @@ class UserItem extends Component {
     return (
       <tr>
         <td className={classNames({ disabled: (!this.props.showEditFields) })}>
-          {this.props.user.userID}
+          {this.props.user.userID.value}
         </td>
         <td className={classNames({ disabled: (!this.props.showEditFields) })}>
-          {this.props.user.fullName}
+          {this.props.user.fullName.value}
+        </td>
+        <td className={classNames({ disabled: (!this.props.showEditFields) })}>
+          {this.props.user.favInt.value}
+        </td>
+        <td className={classNames({ disabled: (!this.props.showEditFields) })}>
+          {this.props.user.favNum.value}
         </td>
         {this.getPackageCells()}
         {deleteButtonCol}

@@ -4,20 +4,24 @@ import * as AppActionCreators from '../../common/AppActionCreators';
 import * as UserActionCreators from './UserActionCreators';
 import User from './components/User';
 
-function getFormIsValid(fieldValidations) {
+function getFormIsValid(users, userID) {
   let isValid = true;
-  Object.keys(fieldValidations).forEach(field => {
-    if (fieldValidations[field] === false) {
-      isValid = false;
-    }
-  });
+  if (userID !== null && Object.keys(users).length > 0) {
+    Object.keys(users[userID]).forEach(field => {
+      if (typeof users[userID][field] !== 'undefined'
+        && users[userID][field] !== null
+        && typeof users[userID][field].isValid !== 'undefined'
+        && users[userID][field].isValid === false) {
+        isValid = false;
+      }
+    });
+  }
   return isValid;
 }
 
 function mapStateToProps(state) {
   return {
-    fieldValidations: state.admin.user.fieldValidations,
-    formIsValid: getFormIsValid(state.admin.user.fieldValidations),
+    formIsValid: getFormIsValid(state.admin.user.users, 'XXnewXX'),
     numColumns: state.admin.user.numColumns,
     permissions: state.app.permissions,
     pkgs: state.admin.user.pkgs,
