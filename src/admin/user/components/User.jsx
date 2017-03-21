@@ -24,13 +24,20 @@ const propTypes = {
 class User extends PureComponent {
   constructor() {
     super();
-    this._bind('onCreateUserButtonClicked', 'onHideWhatIsThis', 'onShowWhatIsThis');
+    this.state = { height: '0px', width: '0px' };
+    this._bind('onCreateUserButtonClicked', 'onHideWhatIsThis', 'onShowWhatIsThis', 'setWindowDimensions');
   }
 
   componentDidMount() {
+    this.setWindowDimensions();
+    window.addEventListener('resize', this.setWindowDimensions);
     this.props.actions.appSetActivePkg('Admin');
     this.props.actions.appSetPageTitle('Users');
     this.props.actions.adminUserFetch();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.setWindowDimensions);
   }
 
   onCreateUserButtonClicked() {
@@ -200,6 +207,9 @@ class User extends PureComponent {
     );
   }
 
+  setWindowDimensions() {
+    this.setState({ height: window.innerHeight, width: window.innerWidth });
+  }
 
   render() {
     return (
@@ -210,7 +220,7 @@ class User extends PureComponent {
         <hr />
         <Row>
           <section className="table-section" style={{ paddingTop: '50px' }}>
-            <div className="table-container">
+            <div className="table-container" style={{ height: `${this.state.height - 300}px` }}>
               <Table bordered condensed hover responsive className="table-fixed-header">
                 <thead className={!this.props.showEditFields ? 'disabled' : null}>
                   <tr>
